@@ -10,9 +10,7 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-  Dispatch = cowboy_router:compile([
-    {'_', [{"/health", health_handler, []}]}
-  ]),
+  Dispatch = cowboy_router:compile([{'_', endpoints:routes()}]),
   {ok, _} = cowboy:start_clear(
     samson_http_listener,
     [{port, 8080}],
