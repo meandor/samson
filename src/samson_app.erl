@@ -10,6 +10,7 @@
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
+  lager:start(),
   Dispatch = cowboy_router:compile([{'_', endpoints:routes()}]),
   {ok, _} = cowboy:start_clear(
     samson_http_listener,
