@@ -6,13 +6,27 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - rebar-{{ checksum "rebar.lock" }}
       - run: rebar3 compile
+      - save_cache:
+          paths:
+            - ~/repo/_build
+          key: rebar-{{ checksum "rebar.lock" }}
   test:
     docker:
       - image: erlang:22
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - rebar-{{ checksum "rebar.lock" }}
       - run: rebar3 eunit
+      - save_cache:
+          paths:
+            - ~/repo/_build
+          key: rebar-{{ checksum "rebar.lock" }}
 
 workflows:
   version: 2
