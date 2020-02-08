@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: erlang:22-alpine
+      - image: erlang:22-slim
     working_directory: ~/repo
     steps:
       - checkout
