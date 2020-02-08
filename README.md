@@ -1,4 +1,5 @@
 # Samson
+[![CircleCI](https://circleci.com/gh/meandor/samson.svg?style=svg)](https://circleci.com/gh/meandor/samson)
 > Samson lives in a cave, and he loves lying in his hammock, cuddling with his "Schnuffeltuch" (his security blanket), and dancing.
 >
 > "Ich bin Samson, und ich schaff's!" -- Samson
