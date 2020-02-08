@@ -3,7 +3,7 @@
 %%%
 %%% @end
 %%%-------------------------------------------------------------------
--module(hello_handler).
+-module(health_handler).
 -author("dschruhl").
 
 %% API
@@ -13,7 +13,7 @@ init(Req0, State) ->
   Req = cowboy_req:reply(
     200,
     #{<<"content-type">> => <<"application/json">>},
-    jiffy:encode(#{message => <<"Hello Erlang!">>}),
+    jiffy:encode(#{status => <<"up">>}),
     Req0
   ),
   {ok, Req, State}.

@@ -11,7 +11,7 @@
 
 start(_StartType, _StartArgs) ->
   Dispatch = cowboy_router:compile([
-    {'_', [{"/", hello_handler, []}]}
+    {'_', [{"/health", health_handler, []}]}
   ]),
   {ok, _} = cowboy:start_clear(
     samson_http_listener,
