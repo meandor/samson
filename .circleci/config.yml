@@ -10,6 +10,7 @@ jobs:
           keys:
             - rebar-{{ checksum "rebar.lock" }}
       - run: rebar3 compile
+      - run: rebar3 release
       - save_cache:
           paths:
             - ~/repo/_build
