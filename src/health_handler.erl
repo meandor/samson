@@ -4,7 +4,6 @@
 %%% @end
 %%%-------------------------------------------------------------------
 -module(health_handler).
--author("dschruhl").
 
 %% API
 -export([init/2, terminate/3]).

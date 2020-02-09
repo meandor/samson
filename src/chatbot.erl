@@ -3,12 +3,12 @@
 %%%
 %%% @end
 %%%-------------------------------------------------------------------
--module(endpoints).
+-module(chatbot).
+
 
 %% API
--export([routes/0]).
+-export([answer/1]).
 
-routes() -> [
-  {"/health", health_handler, []},
-  {"/gchat", google_chat_handler, []}
-].
+answer(Event) ->
+  lager:info(Event),
+  <<"foo">>.
