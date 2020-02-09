@@ -1,6 +1,6 @@
 [
   {samson, [
     {port, ${PORT}},
-    {google_chat_endpoint, ${GOOGLE_CHAT_ENDPOINT}}
+    {google_chat_endpoint, "${GOOGLE_CHAT_ENDPOINT}"}
   ]}
 ].
