@@ -6,9 +6,10 @@
 -module(endpoints).
 
 %% API
--export([routes/0]).
+-export([routes/1]).
 
-routes() -> [
-  {"/health", health_handler, []},
-  {"/gchat", google_chat_handler, []}
-].
+routes(GoogleChatEndpoint) ->
+  [
+    {"/health", health_handler, []},
+    {"/gchat/" ++ GoogleChatEndpoint, google_chat_handler, []}
+  ].

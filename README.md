@@ -16,6 +16,21 @@ rebar3 compile
 rebar3 eunit
 ```
 
+## Endpoints
+### Health endpoint
+```http request
+GET /health
+# Returns 200 - {"status": "up"} 
+```
+
+### Google Chat API
+Handles incoming events and response according to [Google Chat API](https://developers.google.com/hangouts/chat/reference/message-formats).
+Body is in format of [events](https://developers.google.com/hangouts/chat/reference/message-formats/events).
+```http request
+POST /gchat/$GOOGLE_CHAT_ENDPOINT
+# Returns 200 - {"text": "answer"} 
+```
+
 ### Links
  * [hex - package manager for the Erlang ecosystem](https://hex.pm/)
  * [Learn You Some Erlang for great good!](https://learnyousomeerlang.com/)
