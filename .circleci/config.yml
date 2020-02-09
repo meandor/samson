@@ -9,8 +9,6 @@ jobs:
       - restore_cache:
           keys:
             - rebar-{{ checksum "rebar.lock" }}
-      - run: ls -all
-      - run: pwd
       - run: rebar3 dialyzer
       - save_cache:
           paths:
