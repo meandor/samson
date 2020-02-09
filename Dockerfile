@@ -1,6 +1,9 @@
-FROM erlang:22-alpine
+FROM erlang:22
 WORKDIR /app
-COPY _build/default/rel/samson .
+COPY rebar.config rebar.lock ./
+COPY src ./src
+RUN ls -all
+RUN rebar3 compile && rebar3 release && ln -s /app/_build/default/rel/samson/bin/samson /usr/local/bin/samson
 EXPOSE 8080
-ENTRYPOINT ["/app/bin/samson"]
+ENTRYPOINT ["samson"]
 CMD ["foreground"]
