@@ -20,5 +20,5 @@ start(_StartType, _StartArgs) ->
   samson_sup:start_link().
 
 stop(_State) ->
-  init:stop(),
-  ok = cowboy:stop_listener(http).
+  ok = cowboy:stop_listener(http),
+  ok = init:stop().
