@@ -61,7 +61,7 @@ workflows:
       - test
       - deploy_staging:
           requires:
-            - build
+            - dialyze
             - test
       - deploy_live:
           requires:
