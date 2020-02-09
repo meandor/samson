@@ -32,6 +32,7 @@ POST /gchat/$GOOGLE_CHAT_ENDPOINT
 ```
 
 ### Links
+ * [Erlang OTP Documentation](https://erlang.org/doc/apps/stdlib/users_guide.html)
  * [hex - package manager for the Erlang ecosystem](https://hex.pm/)
  * [Learn You Some Erlang for great good!](https://learnyousomeerlang.com/)
  * [Google Chat API Documentation](https://developers.google.com/hangouts/chat)
