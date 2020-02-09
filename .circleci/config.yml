@@ -51,3 +51,7 @@ workflows:
     jobs:
       - build
       - test
+      - deploy_staging:
+          requires:
+            - build
+            - test
