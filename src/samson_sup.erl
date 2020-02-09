@@ -16,15 +16,17 @@
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
-%% child_spec() = #{id => child_id(),       % mandatory
-%%                  start => mfargs(),      % mandatory
-%%                  restart => restart(),   % optional
-%%                  shutdown => shutdown(), % optional
-%%                  type => worker(),       % optional
-%%                  modules => modules()}   % optional
 init([]) ->
     SupFlags = #{strategy => one_for_all,
                  intensity => 5,
                  period => 2},
-    ChildSpecs = [],
+    ChildSpecs = [
+      #{
+        id => ner,
+        start =>
+        {named_entity_recognition, start_link, []},
+        shutdown => 3,
+        type => worker
+      }
+    ],
     {ok, {SupFlags, ChildSpecs}}.
