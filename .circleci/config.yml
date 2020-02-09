@@ -9,16 +9,12 @@ jobs:
       - restore_cache:
           keys:
             - rebar-{{ checksum "rebar.lock" }}
-      - run: rebar3 compile
-      - run: rebar3 release
+      - run: ls -all
+      - run: rebar3 dialyzer
       - save_cache:
           paths:
             - ~/repo/_build
           key: rebar-{{ checksum "rebar.lock" }}
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - ./repo
   test:
     docker:
       - image: erlang:22
@@ -36,8 +32,7 @@ jobs:
     machine: true
     working_directory: ~/repo
     steps:
-      - attach_workspace:
-          at: ~/
+      - checkout
       - run:
           name: Build and push Docker image to Heroku
           command: |

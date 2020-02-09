@@ -11,14 +11,15 @@
 
 start(_StartType, _StartArgs) ->
   lager:start(),
+  Config = application:get_all_env(samson),
   Dispatch = cowboy_router:compile([{'_', endpoints:routes()}]),
   {ok, _} = cowboy:start_clear(
-    samson_http_listener,
-    [{port, 8080}],
+    http_listener,
+    Config,
     #{env => #{dispatch => Dispatch}}
   ),
   samson_sup:start_link().
 
 stop(_State) ->
-  ok = cowboy:stop_listener(http),
+  ok = cowboy:stop_listener(http_listener),
   ok = init:stop().
