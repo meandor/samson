@@ -19,3 +19,4 @@ rebar3 eunit
 ### Links
  * [hex - package manager for the Erlang ecosystem](https://hex.pm/)
  * [Learn You Some Erlang for great good!](https://learnyousomeerlang.com/)
+ * [Google Chat API Documentation](https://developers.google.com/hangouts/chat)
