@@ -1,5 +1,5 @@
 {application, samson,
- [{description, "An OTP application"},
+ [{description, "An Erlang OTP application serving as a chatbot backend."},
   {vsn, "0.1.0"},
   {registered, []},
   {mod, {samson_app, []}},
@@ -14,5 +14,5 @@
   {modules, []},
 
   {licenses, ["Apache 2.0"]},
-  {links, []}
+  {links, ["https://github.com/meandor/samson"]}
  ]}.
