@@ -16,6 +16,19 @@ rebar3 compile
 rebar3 eunit
 ```
 
+## Run
+### Erlang OTP app
+To start only samson with [rebar3](https://www.rebar3.org/):
+```bash
+rebar3 shell
+```
+
+### Complete stack
+To start samson with its external dependencies:
+```bash
+docker-compose up -d
+```
+
 ## Endpoints
 ### Health endpoint
 ```http request
