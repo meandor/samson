@@ -24,7 +24,7 @@ init([]) ->
       #{
         id => ner,
         start =>
-        {named_entity_recognition, start_link, []},
+        {named_entity_recognition, start_link, [fun duckling_client:recognize_entities/1]},
         shutdown => 3,
         type => worker
       }

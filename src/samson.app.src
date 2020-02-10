@@ -9,7 +9,8 @@
     cowboy,
     jiffy,
     lager,
-    prometheus
+    prometheus,
+    hackney
    ]},
   {env,[]},
   {modules, []},
