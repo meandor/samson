@@ -8,13 +8,13 @@
 %% API
 -export([init/2, terminate/3]).
 
-init(Req0, State) ->
-  Req = cowboy_req:reply(
+init(Request, State) ->
+  Response = cowboy_req:reply(
     200,
     #{<<"content-type">> => <<"application/json">>},
     jiffy:encode(#{status => <<"up">>}),
-    Req0
+    Request
   ),
-  {ok, Req, State}.
+  {ok, Response, State}.
 
 terminate(_Reason, _Req, _State) -> ok.
