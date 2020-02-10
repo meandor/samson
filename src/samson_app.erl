@@ -13,24 +13,24 @@ start(_StartType, _StartArgs) ->
   lager:start(),
   [Port | GoogleChatEndpointConfig] = application:get_all_env(samson),
   [{google_chat_endpoint, GoogleChatEndpoint}] = GoogleChatEndpointConfig,
-  lager:info("Starting HTTP Server on: ~p", [Port]),
+  lager:info("HTTP Server: Starting ~p", [Port]),
   Dispatch = cowboy_router:compile([{'_', endpoints:routes(GoogleChatEndpoint)}]),
   {ok, _} = cowboy:start_clear(
     http_listener,
     [Port],
     #{env => #{dispatch => Dispatch}}
   ),
-  lager:info("Started HTTP Server"),
-  lager:info("Starting Supervisor"),
+  lager:info("HTTP Server: Started"),
+  lager:info("Supervisor: Starting "),
   SupervisorStarted = samson_sup:start_link(),
-  lager:info("Started Supervisor"),
+  lager:info("Supervisor: Started "),
   SupervisorStarted.
 
 stop(_State) ->
-  lager:info("Gracefully shutting down"),
-  lager:info("Gracefully shutting down HTTP Server"),
+  lager:info("Initiating graceful shutdown"),
+  lager:info("HTTP Server: Initiating graceful shutdown"),
   ok = cowboy:stop_listener(http_listener),
-  lager:info("Stopped HTTP Server"),
-  lager:info("Gracefully shutting down Supervisor"),
+  lager:info("HTTP Server: Done graceful shutdown"),
+  lager:info("Supervisor: Initiating graceful shutdown"),
   ok = init:stop(),
-  lager:info("Stopped Supervisor").
+  lager:info("Supervisor: Done graceful shutdown").

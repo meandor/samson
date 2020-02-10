@@ -22,6 +22,8 @@ handle_call({userMessage, Text}, _From, _State) ->
   lager:info("Extracted entities: ~p", [Entities]),
   {reply, Entities, []};
 handle_call(terminate, _From, State) ->
+  lager:info("Named entity recognition shutdown: Starting"),
+  lager:info("Named entity recognition shutdown: Done"),
   {stop, normal, ok, State}.
 
 handle_cast(Request, State) -> % async
