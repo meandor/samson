@@ -23,6 +23,13 @@ GET /health
 # Returns 200 - {"status": "up"} 
 ```
 
+### Metrics endpoint
+```http request
+GET /metrics
+# Returns 200 - text 
+```
+Returns [Prometheus](https://prometheus.io/) Metrics
+
 ### Google Chat API
 Handles incoming events and response according to [Google Chat API](https://developers.google.com/hangouts/chat/reference/message-formats).
 Body is in format of [events](https://developers.google.com/hangouts/chat/reference/message-formats/events).

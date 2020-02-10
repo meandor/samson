@@ -13,5 +13,9 @@ health_endpoint_test() ->
   ?assert(lists:member(Expected, Actual)).
 
 google_chat_endpoint_test() ->
-  [_H | [R]] = endpoints:routes("foo"),
-  {"/gchat/foo", google_chat_handler, _} = R.
+  [_H, Actual | _] = endpoints:routes("foo"),
+  {"/gchat/foo", google_chat_handler, _} = Actual.
+
+metrics_endpoint_test() ->
+  [_H, _R, Actual] = endpoints:routes("foo"),
+  {"/metrics", metrics_handler, _} = Actual.

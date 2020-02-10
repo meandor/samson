@@ -11,8 +11,13 @@
 
 start(_StartType, _StartArgs) ->
   lager:start(),
+  lager:info("Loading configs"),
   {ok, Port} = application:get_env(samson, port),
   {ok, GoogleChatEndpoint} = application:get_env(samson, google_chat_endpoint),
+
+  lager:info("Metrics: Starting"),
+  prometheus:start(),
+  lager:info("Metrics: Started"),
 
   lager:info("HTTP Server: Starting on port ~p", [Port]),
   Dispatch = cowboy_router:compile([{'_', endpoints:routes(GoogleChatEndpoint)}]),
