@@ -26,5 +26,5 @@ handle_call(terminate, _From, State) ->
   lager:info("Named entity recognition shutdown: Done"),
   {stop, normal, ok, State}.
 
-handle_cast(Request, State) -> % async
+handle_cast(_Request, _State) ->
   erlang:error(not_implemented).
