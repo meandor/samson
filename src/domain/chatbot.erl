@@ -5,10 +5,9 @@
 %%%-------------------------------------------------------------------
 -module(chatbot).
 
-
-%% API
 -export([answer/1]).
 
+-spec answer(map()) -> binary().
 answer(Event) ->
   {ok, Message} = maps:find(<<"message">>, Event),
   {ok, Text} = maps:find(<<"text">>, Message),
