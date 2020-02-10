@@ -11,16 +11,14 @@
 
 start(_StartType, _StartArgs) ->
   lager:start(),
-  [Port | GoogleChatEndpointConfig] = application:get_all_env(samson),
-  [{google_chat_endpoint, GoogleChatEndpoint}] = GoogleChatEndpointConfig,
-  lager:info("HTTP Server: Starting ~p", [Port]),
+  {ok, Port} = application:get_env(samson, port),
+  {ok, GoogleChatEndpoint} = application:get_env(samson, google_chat_endpoint),
+
+  lager:info("HTTP Server: Starting on port ~p", [Port]),
   Dispatch = cowboy_router:compile([{'_', endpoints:routes(GoogleChatEndpoint)}]),
-  {ok, _} = cowboy:start_clear(
-    http_listener,
-    [Port],
-    #{env => #{dispatch => Dispatch}}
-  ),
+  {ok, _} = cowboy:start_clear(http_listener, [{port, Port}], #{env => #{dispatch => Dispatch}}),
   lager:info("HTTP Server: Started"),
+
   lager:info("Supervisor: Starting "),
   SupervisorStarted = samson_sup:start_link(),
   lager:info("Supervisor: Started "),
