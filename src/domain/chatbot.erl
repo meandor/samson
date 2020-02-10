@@ -6,8 +6,9 @@
 -module(chatbot).
 
 -export([answer/1]).
-
--spec answer(map()) -> binary().
+-type event() :: map().
+-type message() :: binary().
+-spec answer(event()) -> message().
 answer(Event) ->
   {ok, Message} = maps:find(<<"message">>, Event),
   {ok, Text} = maps:find(<<"text">>, Message),

@@ -8,13 +8,13 @@
 %% API
 -export([init/2, terminate/3]).
 
-init(Request, State) ->
+init(Request, [AnswerFn]) ->
   <<"POST">> = cowboy_req:method(Request),
   true = cowboy_req:has_body(Request),
 
   {ok, RawEvent, _} = cowboy_req:read_body(Request),
   Event = jiffy:decode(RawEvent, [return_maps]),
-  Answer = chatbot:answer(Event),
+  Answer = AnswerFn(Event),
 
   Response = cowboy_req:reply(
     200,
@@ -23,6 +23,6 @@ init(Request, State) ->
     Request
   ),
 
-  {ok, Response, State}.
+  {ok, Response, [AnswerFn]}.
 
 terminate(_Reason, _Req, _State) -> ok.

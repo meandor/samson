@@ -11,5 +11,5 @@
 routes(GoogleChatEndpoint) ->
   [
     {"/health", health_handler, []},
-    {"/gchat/" ++ GoogleChatEndpoint, google_chat_handler, []}
+    {"/gchat/" ++ GoogleChatEndpoint, google_chat_handler, [fun(Event) -> chatbot:answer(Event) end]}
   ].
