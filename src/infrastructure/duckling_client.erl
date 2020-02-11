@@ -26,9 +26,7 @@ extract_entity(EntityMap) ->
 -spec extract_entities(binary()) -> entities().
 extract_entities(Body) ->
   EntitiesMap = jiffy:decode(Body, [return_maps]),
-  Entities = lists:map(fun extract_entity/1, EntitiesMap),
-  lager:info("~p ~p", [Body, Entities]),
-  Entities.
+  lists:map(fun extract_entity/1, EntitiesMap).
 
 -spec recognize_entities(chatbot:message()) -> entities().
 recognize_entities(Message) ->

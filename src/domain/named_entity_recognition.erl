@@ -16,7 +16,6 @@ init(NERClient) ->
   {ok, NERClient}.
 
 handle_call({userMessage, Text}, _From, NERClient) ->
-  lager:info("~p", NERClient),
   lager:info("Starting named entity recognition for: ~p", [Text]),
   Entities = duckling_client:recognize_entities(Text),
   lager:info("Extracted entities: ~p", [Entities]),
