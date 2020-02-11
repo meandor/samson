@@ -7,6 +7,14 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
+should_get_empty_entities_from_body_test() ->
+  GivenBody = <<"[]">>,
+
+  Actual = duckling_client:extract_entities(GivenBody),
+  Expected = [],
+
+  ?assertEqual(Expected, Actual).
+
 should_get_one_entity_from_body_test() ->
   GivenBody = <<"[{
    \"body\":\"tomorrow at eight\",
