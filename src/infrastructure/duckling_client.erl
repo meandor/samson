@@ -11,11 +11,17 @@
 
 -type entities() :: list().
 
+extract_entity_value(Value) ->
+  if
+    is_binary(Value) -> binary_to_list(Value);
+    true -> Value
+  end.
+
 extract_entity(EntityMap) ->
   Dimension = maps:get(<<"dim">>, EntityMap),
   ValueMap = maps:get(<<"value">>, EntityMap),
   Value = maps:get(<<"value">>, ValueMap),
-  {binary_to_atom(Dimension, utf8), binary_to_list(Value)}.
+  {binary_to_atom(Dimension, utf8), extract_entity_value(Value)}.
 
 -spec extract_entities(binary()) -> entities().
 extract_entities(Body) ->
@@ -32,9 +38,6 @@ recognize_entities(Message) ->
   Headers = [{<<"Content-Type">>, <<"application/x-www-form-urlencoded">>}],
   URLEncodedMessage = http_uri:encode(binary_to_list(Message)),
   Payload = list_to_binary("locale=" ++ Locale ++ "&text=" ++ URLEncodedMessage),
-  lager:info("sending request to duckling"),
-  lager:info("~p ~p ~p ~p", [Method, list_to_binary(DucklingAPI), Headers, Payload]),
-  {ok, 200, RespHeaders, ClientRef} = hackney:request(Method, list_to_binary(DucklingAPI), Headers, Payload, []),
-  lager:info("got response from duckling ~p ~p", [RespHeaders, ClientRef]),
+  {ok, 200, _RespHeaders, ClientRef} = hackney:request(Method, list_to_binary(DucklingAPI), Headers, Payload, []),
   {ok, Body} = hackney:body(ClientRef),
   extract_entities(Body).

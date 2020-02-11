@@ -24,6 +24,23 @@ should_get_one_entity_from_body_test() ->
 
   ?assertEqual(Expected, Actual).
 
+should_get_number_entity_from_body_test() ->
+  GivenBody = <<"[{
+   \"body\":\"five oranges\",
+   \"start\": 0,
+   \"value\": {
+      \"value\": 5,
+      \"grain\":\"number\",
+      \"type\":\"value\"
+   },
+   \"end\": 4,
+   \"dim\": \"amount\"}]">>,
+
+  Actual = duckling_client:extract_entities(GivenBody),
+  Expected = [{amount, 5}],
+
+  ?assertEqual(Expected, Actual).
+
 should_get_n_entities_from_body_test() ->
   GivenBody = <<"[{
     \"body\":\"tomorrow at eight\",
