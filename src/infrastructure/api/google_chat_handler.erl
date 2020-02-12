@@ -22,9 +22,7 @@ is_valid_event(Event) ->
     _:Reason ->
       lager:error("Got invalid request body with reason: ~p", [Reason]),
       false
-  end;
-is_valid_event(_Event) ->
-  false.
+  end.
 
 response_for_event(Request, AnswerFn, Event) ->
   ValidEvent = is_valid_event(Event),
