@@ -14,11 +14,21 @@ start_link(NERClient) ->
 init(NERClient) ->
   {ok, NERClient}.
 
-handle_call({userMessage, Text}, _From, [NERClient]) ->
+recognize_entities(Text, NERClient) ->
   lager:info("Starting named entity recognition for: ~p", [Text]),
   Entities = metrics_registry:metered_execution(?NER_DURATION, NERClient, [Text]),
   lager:info("Extracted entities: ~p", [Entities]),
-  {reply, Entities, [NERClient]};
+  Entities.
+
+handle_call({userMessage, Text}, _From, [NERClient]) ->
+  try
+    Entities = recognize_entities(Text, NERClient),
+    {reply, Entities, [NERClient]}
+  catch
+    Exception:Reason ->
+      lager:error("Could not recognize entities ~n Got Exception: ~p with Reason: ~p", [Exception, Reason]),
+      {reply, [], [NERClient]}
+  end;
 handle_call(terminate, _From, State) ->
   lager:info("Named entity recognition shutdown: Starting"),
   lager:info("Named entity recognition shutdown: Done"),
