@@ -1,15 +1,12 @@
 %%%-------------------------------------------------------------------
 %%% @doc
-%%% TODO: add behaviour for client
+%%%
 %%% @end
 %%%-------------------------------------------------------------------
 -module(duckling_client).
+-behaviour(ner_client).
 
 -export([recognize_entities/1, extract_entities/1]).
-
--export_type([entities/0]).
-
--type entities() :: list().
 
 extract_entity_value(Value) ->
   if
@@ -23,12 +20,12 @@ extract_entity(EntityMap) ->
   Value = maps:get(<<"value">>, ValueMap),
   {binary_to_atom(Dimension, utf8), extract_entity_value(Value)}.
 
--spec extract_entities(binary()) -> entities().
+-spec extract_entities(binary()) -> chatbot:entities().
 extract_entities(Body) ->
   EntitiesMap = jiffy:decode(Body, [return_maps]),
   lists:map(fun extract_entity/1, EntitiesMap).
 
--spec recognize_entities(chatbot:message()) -> entities().
+-spec recognize_entities(chatbot:message()) -> chatbot:entities().
 recognize_entities(Message) ->
   Locale = "en_GB",
   {ok, DucklingAPI} = application:get_env(samson, duckling_api),
