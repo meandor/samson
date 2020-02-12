@@ -5,7 +5,7 @@
 %%%-------------------------------------------------------------------
 -module(named_entity_recognition).
 -behaviour(gen_server).
--include("../metrics_registry.hrl").
+-include("../metrics_registry_h.hrl").
 -export([init/1, handle_call/3, handle_cast/2, start_link/1]).
 
 start_link(NERClient) ->
