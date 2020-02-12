@@ -17,6 +17,7 @@ start(_StartType, _StartArgs) ->
 
   lager:info("Metrics: Starting"),
   prometheus:start(),
+  metrics_registry:register(),
   lager:info("Metrics: Started"),
 
   lager:info("HTTP Server: Starting on port ~p", [Port]),

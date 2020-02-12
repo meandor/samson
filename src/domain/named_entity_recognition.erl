@@ -4,9 +4,8 @@
 %%% @end
 %%%-------------------------------------------------------------------
 -module(named_entity_recognition).
-
 -behaviour(gen_server).
-
+-include("../metrics_registry.hrl").
 -export([init/1, handle_call/3, handle_cast/2, start_link/1]).
 
 start_link(NERClient) ->
@@ -17,7 +16,7 @@ init(NERClient) ->
 
 handle_call({userMessage, Text}, _From, NERClient) ->
   lager:info("Starting named entity recognition for: ~p", [Text]),
-  Entities = duckling_client:recognize_entities(Text),
+  Entities = metrics_registry:metered_execution(?NER_DURATION, fun duckling_client:recognize_entities/1, [Text]), %TODO: use NERClient abstraction
   lager:info("Extracted entities: ~p", [Entities]),
   {reply, Entities, NERClient};
 handle_call(terminate, _From, State) ->
