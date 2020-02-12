@@ -6,7 +6,7 @@
 -module(metrics_registry).
 -include("metrics_registry_h.hrl").
 -export([register/0, metered_execution/3]).
-
+% TODO: Add metrics for http requests, messages processed, duckling client
 register() ->
   prometheus_histogram:new([
     {name, ?HTTP_REQUESTS},
