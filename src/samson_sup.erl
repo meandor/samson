@@ -11,19 +11,26 @@
 -define(SERVER, ?MODULE).
 
 start_link() ->
-    supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+  supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
 init([]) ->
-    SupFlags = #{strategy => one_for_all,
-                 intensity => 5,
-                 period => 2},
-    ChildSpecs = [
-      #{
-        id => ner,
-        start =>
-        {named_entity_recognition, start_link, [fun duckling_client:recognize_entities/1]},
-        shutdown => 3,
-        type => worker
-      }
-    ],
-    {ok, {SupFlags, ChildSpecs}}.
+  SupFlags = #{strategy => one_for_all,
+    intensity => 5,
+    period => 2},
+  ChildSpecs = [
+    #{
+      id => ner,
+      start =>
+      {named_entity_recognition, start_link, [fun duckling_client:recognize_entities/1]},
+      shutdown => 3,
+      type => worker
+    },
+    #{
+      id => intent_classifier,
+      start =>
+      {intent_classifier, start_link, [fun() -> {} end]},
+      shutdown => 3,
+      type => worker
+    }
+  ],
+  {ok, {SupFlags, ChildSpecs}}.

@@ -4,7 +4,7 @@
 %%% @end
 %%%-------------------------------------------------------------------
 -module(metrics_registry).
--include("metrics_registry.hrl").
+-include("metrics_registry_h.hrl").
 -export([register/0, metered_execution/3]).
 
 register() ->
@@ -28,6 +28,10 @@ register() ->
     {name, ?NER_DURATION},
     {buckets, [5, 10, 25, 50, 150]},
     {help, "Named entity recognition execution time"}]),
+  prometheus_histogram:new([
+    {name, ?INTENT_DURATION},
+    {buckets, [5, 10, 25, 50, 150]},
+    {help, "Intent classification execution time"}]),
   prometheus_histogram:new([
     {name, ?DUCKLING_REQUESTS},
     {buckets, [100, 300, 500, 750, 1000]},
