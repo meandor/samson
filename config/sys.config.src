@@ -1,5 +1,6 @@
 [{samson, [
   {port, ${PORT}},
   {google_chat_endpoint, "${GOOGLE_CHAT_ENDPOINT}"},
-  {duckling_api, "${DUCKLING_API}"}
+  {duckling_api, "${DUCKLING_API}"},
+  {rasa_intent_api, "${RASA_INTENT_API}"}
 ]}].

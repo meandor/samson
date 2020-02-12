@@ -28,7 +28,7 @@ init([]) ->
     #{
       id => intent_classifier,
       start =>
-      {intent_classifier, start_link, [fun() -> {} end]},
+      {intent_classifier, start_link, [fun rasa_intent_classifier_client:classify_intent/1]},
       shutdown => 3,
       type => worker
     }

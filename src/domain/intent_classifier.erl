@@ -17,12 +17,18 @@ start_link(IntentClassifierClient) ->
 init(IntentClassifierClient) ->
   {ok, IntentClassifierClient}.
 
+by_score_desc(IntentA, IntentB) ->
+  {_, ProbA} = IntentA,
+  {_, ProbB} = IntentB,
+  ProbB =< ProbA.
+
 classify_intent(IntentClassifierClient, Text) ->
   try
-    Intent = metrics_registry:metered_execution(?INTENT_DURATION, IntentClassifierClient, [Text]),
+    Intents = metrics_registry:metered_execution(?INTENT_DURATION, IntentClassifierClient, [Text]),
+    lager:info("Classified intents: ~p", [Intents]),
     if
-      Intent == {} -> ?UNKNOWN_INTENT;
-      true -> Intent
+      Intents == [] -> ?UNKNOWN_INTENT;
+      true -> utils:first(lists:sort(fun by_score_desc/2, Intents))
     end
   catch
     Exception:Reason ->
@@ -31,9 +37,9 @@ classify_intent(IntentClassifierClient, Text) ->
   end.
 
 handle_call({classifyIntent, Text}, _From, [IntentClassifierClient]) ->
-  lager:info("Starting named entity recognition for: ~p", [Text]),
+  lager:info("Starting intent classification for: ~p", [Text]),
   Intent = classify_intent(IntentClassifierClient, Text),
-  lager:info("Classified intent: ~p", [Intent]),
+  lager:info("Chose intent: ~p", [Intent]),
   {reply, Intent, [IntentClassifierClient]};
 handle_call(terminate, _From, State) ->
   lager:info("Intent classifier shutdown: Starting"),
