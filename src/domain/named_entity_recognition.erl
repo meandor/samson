@@ -14,11 +14,11 @@ start_link(NERClient) ->
 init(NERClient) ->
   {ok, NERClient}.
 
-handle_call({userMessage, Text}, _From, NERClient) ->
+handle_call({userMessage, Text}, _From, [NERClient]) ->
   lager:info("Starting named entity recognition for: ~p", [Text]),
-  Entities = metrics_registry:metered_execution(?NER_DURATION, fun duckling_client:recognize_entities/1, [Text]), %TODO: use NERClient abstraction
+  Entities = metrics_registry:metered_execution(?NER_DURATION, NERClient, [Text]),
   lager:info("Extracted entities: ~p", [Entities]),
-  {reply, Entities, NERClient};
+  {reply, Entities, [NERClient]};
 handle_call(terminate, _From, State) ->
   lager:info("Named entity recognition shutdown: Starting"),
   lager:info("Named entity recognition shutdown: Done"),
