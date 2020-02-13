@@ -4,6 +4,7 @@
    {duckling_api, "${DUCKLING_API}"},
    {rasa_intent_api, "${RASA_INTENT_API}"}]},
   {lager, [
+    {log_root, "./log/"},
     {colored, true},
     {handlers, [
       {lager_console_backend, [
