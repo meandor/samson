@@ -1,9 +1,9 @@
 [{samson, [
   {port, ${PORT}},
-   {google_chat_endpoint, "${GOOGLE_CHAT_ENDPOINT}"},
-   {google_chat_api_token, <<"${GOOGLE_CHAT_API_KEY}">>},
-   {duckling_api, "${DUCKLING_API}"},
-   {rasa_intent_api, "${RASA_INTENT_API}"}]},
+  {google_chat_endpoint, "${GOOGLE_CHAT_ENDPOINT}"},
+  {google_chat_api_token, <<"${GOOGLE_CHAT_API_KEY}">>},
+  {duckling_api, "${DUCKLING_API}"},
+  {rasa_intent_api, "${RASA_INTENT_API}"}]},
   {lager, [
     {log_root, "./log/"},
     {colored, true},
