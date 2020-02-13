@@ -1,6 +1,18 @@
 [{samson, [
   {port, ${PORT}},
-  {google_chat_endpoint, "${GOOGLE_CHAT_ENDPOINT}"},
-  {duckling_api, "${DUCKLING_API}"},
-  {rasa_intent_api, "${RASA_INTENT_API}"}
-]}].
+   {google_chat_endpoint, "${GOOGLE_CHAT_ENDPOINT}"},
+   {duckling_api, "${DUCKLING_API}"},
+   {rasa_intent_api, "${RASA_INTENT_API}"}]},
+  {lager, [
+    {colored, true},
+    {handlers, [
+      {lager_console_backend, [
+        {level, info},
+        {formatter, lager_default_formatter},
+        {formatter_config, [time, color, " [", severity, "] ", "[", pid, ":", module, ":", function, "] ", message, "\e[0m\r\n"]}
+      ]},
+      {lager_file_backend, [{file, "error.log"}, {level, error}]},
+      {lager_file_backend, [{file, "console.log"}, {level, info}]}
+    ]}
+  ]}
+].
