@@ -6,7 +6,7 @@
 -module(chatbot).
 
 -export([answer/1]).
--export_type([event/0, message/0, entities/0]).
+-export_type([event/0, message/0, entities/0, intent/0]).
 
 -type event() :: map().
 -type message() :: binary().
