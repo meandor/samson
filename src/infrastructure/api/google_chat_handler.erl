@@ -28,12 +28,21 @@ is_valid_event(Event) ->
   end.
 
 response_for_event(Start, Request, AnswerFn, Event) ->
-  ValidEvent = is_valid_event(Event),
+  IsValidEvent = is_valid_event(Event),
   if
-    ValidEvent == true ->
-      Answer = AnswerFn(Event),
-      endpoints:response(Start, Request, 200, #{text => Answer});
+    (IsValidEvent == true) ->
+      {ok, GoogleChatApiToken} = application:get_env(samson, google_chat_api_token),
+      RequestToken = maps:get(<<"token">>, Event, ""),
+      if
+        GoogleChatApiToken == RequestToken ->
+          Answer = AnswerFn(Event),
+          endpoints:response(Start, Request, 200, #{text => Answer});
+        true ->
+          lager:info("Unauthorized access"),
+          endpoints:response(Start, Request, 401, #{error => <<"unauthorized">>})
+      end;
     true ->
+      lager:info("Invalid body given"),
       endpoints:response(Start, Request, 400, #{error => <<"The supplied body is invalid">>})
   end.
 
@@ -56,6 +65,7 @@ init(Request, [AnswerFn]) ->
       Response = response_for_body(Start, Request, AnswerFn),
       {ok, Response, [AnswerFn]};
     true ->
+      lager:info("No body given"),
       Response = endpoints:response(Start, Request, 400, #{error => <<"Please supply a body">>}),
       {ok, Response, [AnswerFn]}
   end.
