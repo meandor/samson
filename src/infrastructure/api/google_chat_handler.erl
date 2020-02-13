@@ -4,8 +4,6 @@
 %%% @end
 %%%-------------------------------------------------------------------
 -module(google_chat_handler).
-
-%% API
 -export([init/2, terminate/3, is_valid_event/1]).
 
 is_valid_event(Event) ->
@@ -29,54 +27,36 @@ is_valid_event(Event) ->
       false
   end.
 
-response_for_event(Request, AnswerFn, Event) ->
+response_for_event(Start, Request, AnswerFn, Event) ->
   ValidEvent = is_valid_event(Event),
   if
     ValidEvent == true ->
       Answer = AnswerFn(Event),
-      cowboy_req:reply(
-        200,
-        #{<<"content-type">> => <<"application/json">>},
-        jiffy:encode(#{text => Answer}),
-        Request
-      );
+      endpoints:response(Start, Request, 200, #{text => Answer});
     true ->
-      cowboy_req:reply(
-        400,
-        #{<<"content-type">> => <<"application/json">>},
-        jiffy:encode(#{error => <<"The supplied body is invalid">>}),
-        Request
-      )
+      endpoints:response(Start, Request, 400, #{error => <<"The supplied body is invalid">>})
   end.
 
-response_for_body(Request, AnswerFn) ->
+response_for_body(Start, Request, AnswerFn) ->
   {ReadBodySuccessful, RawEvent, _} = cowboy_req:read_body(Request),
   if
     ReadBodySuccessful == ok ->
       Event = jiffy:decode(RawEvent, [return_maps]),
-      response_for_event(Request, AnswerFn, Event);
-    true -> cowboy_req:reply(
-      400,
-      #{<<"content-type">> => <<"application/json">>},
-      jiffy:encode(#{error => <<"The supplied body is invalid">>}),
-      Request
-    )
+      response_for_event(Start, Request, AnswerFn, Event);
+    true ->
+      endpoints:response(Start, Request, 400, #{error => <<"The supplied body is invalid">>})
   end.
 
 init(Request, [AnswerFn]) ->
+  Start = os:system_time(),
   <<"POST">> = cowboy_req:method(Request),
   HasBody = cowboy_req:has_body(Request),
   if
     HasBody == true ->
-      Response = response_for_body(Request, AnswerFn),
+      Response = response_for_body(Start, Request, AnswerFn),
       {ok, Response, [AnswerFn]};
     true ->
-      Response = cowboy_req:reply(
-        400,
-        #{<<"content-type">> => <<"application/json">>},
-        jiffy:encode(#{error => <<"Please supply a body">>}),
-        Request
-      ),
+      Response = endpoints:response(Start, Request, 400, #{error => <<"Please supply a body">>}),
       {ok, Response, [AnswerFn]}
   end.
 
