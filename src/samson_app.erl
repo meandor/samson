@@ -33,6 +33,9 @@ stop(_State) ->
   lager:info("HTTP Server: Initiating graceful shutdown"),
   ok = cowboy:stop_listener(http_listener),
   lager:info("HTTP Server: Done graceful shutdown"),
+  lager:info("Metrics: Initiating graceful shutdown"),
+  prometheus:stop(),
+  lager:info("Metrics: Done graceful shutdown"),
   lager:info("Supervisor: Initiating graceful shutdown"),
   ok = init:stop(),
   lager:info("Supervisor: Done graceful shutdown").

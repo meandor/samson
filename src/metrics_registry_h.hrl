@@ -9,4 +9,4 @@
 -define(NER_DURATION, ner_duration_milliseconds).
 -define(INTENT_DURATION, intent_duration_milliseconds).
 -define(DUCKLING_REQUESTS, duckling_request_duration_milliseconds).
--define(RASA_INTENT_REQUESTS, duckling_requests_total).
+-define(RASA_INTENT_REQUESTS, rasa_request_duration_milliseconds).
