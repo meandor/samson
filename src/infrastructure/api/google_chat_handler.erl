@@ -19,8 +19,13 @@ is_valid_event(Event) ->
     lager:info("Got valid request"),
     true
   catch
-    _:Reason ->
-      lager:error("Got invalid request body with reason: ~p", [Reason]),
+    Class:Reason:Stacktrace ->
+      lager:error("Got invalid request body"),
+      lager:error("Could not recognize entities"),
+      lager:error(
+        "~nStacktrace:~s",
+        [lager:pr_stacktrace(Stacktrace, {Class, Reason})]
+      ),
       false
   end.
 

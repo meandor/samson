@@ -31,8 +31,12 @@ classify_intent(IntentClassifierClient, Text) ->
       true -> utils:first(lists:sort(fun by_score_desc/2, Intents))
     end
   catch
-    Exception:Reason ->
-      lager:error("Could not classify intent, exception: ~p, reason: ~p", [Exception, Reason]),
+    Class:Reason:Stacktrace ->
+      lager:error("Could not classify intent"),
+      lager:error(
+        "~nStacktrace:~s",
+        [lager:pr_stacktrace(Stacktrace, {Class, Reason})]
+      ),
       ?UNKNOWN_INTENT
   end.
 

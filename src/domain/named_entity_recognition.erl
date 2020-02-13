@@ -25,8 +25,12 @@ handle_call({userMessage, Text}, _From, [NERClient]) ->
     Entities = recognize_entities(Text, NERClient),
     {reply, Entities, [NERClient]}
   catch
-    Exception:Reason ->
-      lager:error("Could not recognize entities ~n Got Exception: ~p with Reason: ~p", [Exception, Reason]),
+    Class:Reason:Stacktrace ->
+      lager:error("Could not recognize entities"),
+      lager:error(
+        "~nStacktrace:~s",
+        [lager:pr_stacktrace(Stacktrace, {Class, Reason})]
+      ),
       {reply, [], [NERClient]}
   end;
 handle_call(terminate, _From, State) ->
