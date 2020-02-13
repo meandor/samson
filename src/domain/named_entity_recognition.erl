@@ -16,7 +16,7 @@ init(NERClient) ->
 
 recognize_entities(Text, NERClient) ->
   lager:info("Starting named entity recognition for: ~p", [Text]),
-  Entities = metrics_registry:metered_execution(?NER_DURATION, NERClient, [Text]),
+  Entities = metrics_registry:metered_execution_duration(?NER_DURATION, NERClient, [Text]),
   lager:info("Extracted entities: ~p", [Entities]),
   Entities.
 

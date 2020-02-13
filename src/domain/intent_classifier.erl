@@ -24,7 +24,7 @@ by_score_desc(IntentA, IntentB) ->
 
 classify_intent(IntentClassifierClient, Text) ->
   try
-    Intents = metrics_registry:metered_execution(?INTENT_DURATION, IntentClassifierClient, [Text]),
+    Intents = metrics_registry:metered_execution_duration(?INTENT_DURATION, IntentClassifierClient, [Text]),
     lager:info("Classified intents: ~p", [Intents]),
     if
       Intents == [] -> ?UNKNOWN_INTENT;

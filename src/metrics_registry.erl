@@ -5,7 +5,7 @@
 %%%-------------------------------------------------------------------
 -module(metrics_registry).
 -include("metrics_registry_h.hrl").
--export([register/0, metered_execution/3]).
+-export([register/0, metered_execution_duration/3]).
 % TODO: Add metrics for http requests, messages processed, duckling client
 register() ->
   prometheus_histogram:new([
@@ -41,10 +41,18 @@ register() ->
     {labels, [status]},
     {help, "Duckling client http request count"}]).
 
-metered_execution(MetricName, Fn, Args) ->
-  Start = os:system_time(millisecond),
-  Result = apply(Fn, Args),
-  End = os:system_time(millisecond),
-  Duration = End - Start,
-  prometheus_histogram:observe(MetricName, Duration),
-  Result.
+metered_execution_duration(MetricName, Fn, Args) ->
+  metered_execution(MetricName, native, Fn, Args).
+
+metered_execution(MetricName, TimeUnit, Fn, Args) ->
+  Start = os:system_time(TimeUnit),
+  try
+    Result = apply(Fn, Args),
+    prometheus_histogram:observe(MetricName, os:system_time(TimeUnit) - Start),
+    Result
+  catch
+    Exception ->
+      prometheus_histogram:observe(MetricName, os:system_time(TimeUnit) - Start),
+      lager:error("~p", [Exception]),
+      erlang:error(Exception)
+  end.
