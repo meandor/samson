@@ -42,17 +42,17 @@ register() ->
     {help, "Duckling client http request count"}]).
 
 metered_execution_duration(MetricName, Fn, Args) ->
-  metered_execution(MetricName, native, Fn, Args).
-
-metered_execution(MetricName, TimeUnit, Fn, Args) ->
-  Start = os:system_time(TimeUnit),
+  Start = os:system_time(),
   try
     Result = apply(Fn, Args),
-    prometheus_histogram:observe(MetricName, os:system_time(TimeUnit) - Start),
+    prometheus_histogram:observe(MetricName, os:system_time() - Start),
     Result
   catch
-    Exception ->
-      prometheus_histogram:observe(MetricName, os:system_time(TimeUnit) - Start),
-      lager:error("~p", [Exception]),
-      erlang:error(Exception)
+    Class:Reason:Stacktrace ->
+      prometheus_histogram:observe(MetricName, os:system_time() - Start),
+      lager:error(
+        "~nStacktrace:~s",
+        [lager:pr_stacktrace(Stacktrace, {Class, Reason})]
+      ),
+      erlang:error(Reason)
   end.
