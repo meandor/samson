@@ -6,12 +6,13 @@
   {applications,
    [kernel,
     stdlib,
-    cowboy,
-    jiffy,
     lager,
+    jiffy,
     prometheus,
-    hackney
-   ]},
+    hackney,
+    eredis,
+    cowboy
+]},
   {env,[]},
   {modules, []},
 
