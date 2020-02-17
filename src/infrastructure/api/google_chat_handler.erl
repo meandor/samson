@@ -28,6 +28,7 @@ is_valid_event(Event) ->
   end.
 
 response_for_event(Start, Request, AnswerFn, Event) ->
+  lager:info("got event: ~p", [Event]),
   IsValidEvent = is_valid_event(Event),
   if
     (IsValidEvent == true) ->
