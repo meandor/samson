@@ -16,6 +16,9 @@ is_valid_event(Event) ->
     UserName = maps:get(<<"name">>, User),
     true = is_binary(UserName),
     true = UserName =/= <<"">>,
+    UserEmail = maps:get(<<"email">>, User),
+    true = is_binary(UserEmail),
+    true = UserEmail =/= <<"">>,
     lager:info("Got valid request"),
     true
   catch
@@ -33,16 +36,9 @@ response_for_event(Start, Request, AnswerFn, Event) ->
   IsValidEvent = is_valid_event(Event),
   if
     (IsValidEvent == true) ->
-      {ok, GoogleChatApiToken} = application:get_env(samson, google_chat_api_token),
-      RequestToken = maps:get(<<"token">>, Event, ""),
-      if
-        GoogleChatApiToken == RequestToken ->
-          Answer = AnswerFn(Event),
-          endpoints:response(Start, Request, 200, #{text => Answer});
-        true ->
-          lager:info("Unauthorized access"),
-          endpoints:response(Start, Request, 401, #{error => <<"unauthorized">>})
-      end;
+      Username =
+        Answer = AnswerFn(Event),
+      endpoints:response(Start, Request, 200, #{text => Answer});
     true ->
       lager:info("Invalid body given"),
       endpoints:response(Start, Request, 400, #{error => <<"The supplied body is invalid">>})
