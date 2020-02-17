@@ -31,6 +31,13 @@ init([]) ->
       {intent_classifier, start_link, [fun rasa_intent_classifier_client:classify_intent/1]},
       shutdown => 3,
       type => worker
+    },
+    #{
+      id => user_redis,
+      start =>
+      {user_redis, start_link, []},
+      shutdown => 3,
+      type => worker
     }
   ],
   {ok, {SupFlags, ChildSpecs}}.

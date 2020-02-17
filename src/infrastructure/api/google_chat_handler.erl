@@ -36,8 +36,12 @@ response_for_event(Start, Request, AnswerFn, Event) ->
   IsValidEvent = is_valid_event(Event),
   if
     (IsValidEvent == true) ->
-      Username =
-        Answer = AnswerFn(Event),
+      User = maps:get(<<"user">>, Event),
+      UserSpace = binary_to_list(maps:get(<<"name">>, User)),
+      UserEmail = binary_to_list(maps:get(<<"email">>, User)),
+      UserState = ["space", UserSpace, "email", UserEmail],
+      gen_server:call(user_redis, {updateUser, UserSpace, UserState}),
+      Answer = AnswerFn(Event),
       endpoints:response(Start, Request, 200, #{text => Answer});
     true ->
       lager:info("Invalid body given"),

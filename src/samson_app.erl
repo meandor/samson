@@ -18,14 +18,15 @@ start(_StartType, _StartArgs) ->
   metrics_registry:register(),
   lager:info("Metrics: Started"),
 
+  lager:info("Supervisor: Starting "),
+  SupervisorStarted = samson_sup:start_link(),
+  lager:info("Supervisor: Started "),
+
   lager:info("HTTP Server: Starting on port ~p", [Port]),
   Dispatch = cowboy_router:compile([{'_', endpoints:routes(GoogleChatEndpoint)}]),
   {ok, _} = cowboy:start_clear(http_listener, [{port, Port}], #{env => #{dispatch => Dispatch}}),
   lager:info("HTTP Server: Started"),
 
-  lager:info("Supervisor: Starting "),
-  SupervisorStarted = samson_sup:start_link(),
-  lager:info("Supervisor: Started "),
   SupervisorStarted.
 
 stop(_State) ->

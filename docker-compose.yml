@@ -14,3 +14,8 @@ services:
     image: rasa/duckling
     ports:
       - "8000:8000"
+
+duckling:
+    image: redis
+    ports:
+      - "6379:6379"
