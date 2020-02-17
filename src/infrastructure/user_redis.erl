@@ -18,6 +18,7 @@ start_link() ->
 
 init([]) ->
   {ok, RedisUrl} = application:get_env(samson, redis_url),
+  lager:info("Connecting to: ~p", [RedisUrl]),
   {ok, _RedisClient} = eredis:start_link(RedisUrl).
 
 %% @private
