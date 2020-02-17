@@ -11,9 +11,11 @@ is_valid_event(Event) ->
     Type = maps:get(<<"type">>, Event),
     true = is_binary(Type),
     true = Type =/= <<"">>,
-    Token = maps:get(<<"token">>, Event),
-    true = is_binary(Token),
-    true = Token =/= <<"">>,
+    User = maps:get(<<"user">>, Event),
+    true = is_map(User),
+    UserName = maps:get(<<"name">>, User),
+    true = is_binary(UserName),
+    true = UserName =/= <<"">>,
     lager:info("Got valid request"),
     true
   catch
@@ -28,7 +30,6 @@ is_valid_event(Event) ->
   end.
 
 response_for_event(Start, Request, AnswerFn, Event) ->
-  lager:info("got event: ~p", [Event]),
   IsValidEvent = is_valid_event(Event),
   if
     (IsValidEvent == true) ->

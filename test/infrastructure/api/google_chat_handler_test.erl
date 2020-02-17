@@ -15,10 +15,25 @@ is_empty_event_test() ->
 
   ?assertEqual(Expected, Actual).
 
-is_empty_string_event_test() ->
+is_empty_type_string_event_test() ->
   GivenEvent = #{
     <<"type">> => <<"">>,
-    <<"token">> => <<"">>
+    <<"user">> => #{
+      <<"name">> => <<"bar">>
+    }
+  },
+
+  Actual = google_chat_handler:is_valid_event(GivenEvent),
+  Expected = false,
+
+  ?assertEqual(Expected, Actual).
+
+is_empty_user_name_string_event_test() ->
+  GivenEvent = #{
+    <<"type">> => <<"foo">>,
+    <<"user">> => #{
+      <<"name">> => <<"">>
+    }
   },
 
   Actual = google_chat_handler:is_valid_event(GivenEvent),
@@ -29,7 +44,9 @@ is_empty_string_event_test() ->
 is_valid_event_test() ->
   GivenEvent = #{
     <<"type">> => <<"foo">>,
-    <<"token">> => <<"bar">>
+    <<"user">> => #{
+      <<"name">> => <<"bar">>
+    }
   },
 
   Actual = google_chat_handler:is_valid_event(GivenEvent),
