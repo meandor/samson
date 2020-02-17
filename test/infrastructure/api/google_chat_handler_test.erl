@@ -61,7 +61,8 @@ is_valid_event_test() ->
   GivenEvent = #{
     <<"type">> => <<"foo">>,
     <<"user">> => #{
-      <<"name">> => <<"bar">>
+      <<"name">> => <<"bar">>,
+      <<"email">> => <<"foo@bar.com">>
     }
   },
 
