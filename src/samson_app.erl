@@ -11,6 +11,8 @@ start(_StartType, _StartArgs) ->
   lager:start(),
   lager:info("Loading configs"),
   {ok, Port} = application:get_env(samson, port),
+  Config = application:get_all_env(samson),
+  lager:info("~p", [Config]),
   {ok, GoogleChatEndpoint} = application:get_env(samson, google_chat_endpoint),
 
   lager:info("Metrics: Starting"),
