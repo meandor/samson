@@ -25,6 +25,7 @@ init([]) ->
 %% @doc Handling call messages
 handle_call({updateUser, UserId, User}, _From, RedisClient) ->
   {ok, _} = eredis:q(RedisClient, ["HMSET", UserId | User]),
+  lager:info("Updated user: ~p", [UserId]),
   {reply, ok, RedisClient}.
 
 %% @private
