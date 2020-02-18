@@ -40,9 +40,9 @@ classify_intent(IntentClassifierClient, Text) ->
       ?UNKNOWN_INTENT
   end.
 
-handle_call({classifyIntent, Text}, _From, [IntentClassifierClient]) ->
-  lager:info("Starting intent classification for: ~p", [Text]),
-  Intent = classify_intent(IntentClassifierClient, Text),
+handle_call({classifyIntent, _UserId, Message}, _From, [IntentClassifierClient]) ->
+  lager:info("Starting intent classification for: ~p", [Message]),
+  Intent = classify_intent(IntentClassifierClient, Message),
   lager:info("Chose intent: ~p", [Intent]),
   {reply, Intent, [IntentClassifierClient]};
 handle_call(terminate, _From, State) ->

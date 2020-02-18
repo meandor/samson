@@ -5,23 +5,21 @@
 %%%-------------------------------------------------------------------
 -module(chatbot).
 
--export([answer/1]).
--export_type([event/0, message/0, entities/0, intent/0]).
+-export([answer/2]).
+-export_type([message/0, entities/0, intent/0, userId/0]).
 
--type event() :: map().
+-type userId() :: string().
 -type message() :: binary().
 -type entities() :: list().
 -type intent() :: {Name :: atom(), Probability :: number()}.
 
--spec answer(event()) -> message().
-answer(Event) ->
-  {ok, Message} = maps:find(<<"message">>, Event),
-  {ok, Text} = maps:find(<<"text">>, Message),
-  lager:info("Generating answer for: ~p", [Text]),
+-spec answer(UserId :: userId(), Message :: message()) -> message().
+answer(UserId, Message) ->
+  lager:info("Generating answer for: ~p", [Message]),
 
-  Entities = gen_server:call(ner, {userMessage, Text}),
+  Entities = gen_server:call(ner, {userMessage, UserId, Message}),
   lager:info("Got entities: ~p", [Entities]),
 
-  Intent = gen_server:call(intent_classifier, {classifyIntent, Text}),
+  Intent = gen_server:call(intent_classifier, {classifyIntent, UserId, Message}),
   lager:info("Got intent: ~p", [Intent]),
   <<"foo">>.

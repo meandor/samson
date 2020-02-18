@@ -21,6 +21,6 @@ response(Start, Request, StatusCode, ResponseBody) ->
 routes(GoogleChatEndpoint) ->
   [
     {"/health", health_handler, []},
-    {"/gchat/" ++ GoogleChatEndpoint, google_chat_handler, [fun chatbot:answer/1]},
+    {"/gchat/" ++ GoogleChatEndpoint, google_chat_handler, [fun chatbot:answer/2]},
     {"/metrics", metrics_handler, [fun prometheus_text_format:format/0]}
   ].

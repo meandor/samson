@@ -20,9 +20,9 @@ recognize_entities(Text, NERClient) ->
   lager:info("Extracted entities: ~p", [Entities]),
   Entities.
 
-handle_call({userMessage, Text}, _From, [NERClient]) ->
+handle_call({userMessage, _UserId, Message}, _From, [NERClient]) ->
   try
-    Entities = recognize_entities(Text, NERClient),
+    Entities = recognize_entities(Message, NERClient),
     {reply, Entities, [NERClient]}
   catch
     Class:Reason:Stacktrace ->
