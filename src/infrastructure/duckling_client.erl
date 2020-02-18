@@ -42,7 +42,7 @@ call_api(Start, Api, Payload) ->
 recognize_entities(Message) ->
   Locale = "en_GB",
   {ok, DucklingAPI} = application:get_env(samson, duckling_api),
-  URLEncodedMessage = cow_qs:urlencode(binary_to_list(Message)),
+  URLEncodedMessage = binary_to_list(cow_qs:urlencode(Message)),
   Payload = list_to_binary("locale=" ++ Locale ++ "&text=" ++ URLEncodedMessage),
   Start = os:system_time(),
   try
