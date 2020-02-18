@@ -1,0 +1,1 @@
+FROM rasa/duckling

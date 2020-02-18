@@ -39,6 +39,19 @@ jobs:
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-chatbot-staging web
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-chatbot-staging web
+  deploy_duckling_staging:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Build and push Docker image to Heroku
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+            cd services/duckling
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-duckling-staging web
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-duckling-staging web
   deploy_live:
     machine: true
     working_directory: ~/repo
@@ -59,6 +72,10 @@ workflows:
       - dialyze
       - test
       - deploy_staging:
+          requires:
+            - dialyze
+            - test
+      - deploy_duckling_staging:
           requires:
             - dialyze
             - test
