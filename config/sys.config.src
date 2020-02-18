@@ -1,6 +1,6 @@
 [{samson, [
   {port, ${PORT}},
-  {redis_url, "${REDIS_URL}"},
+  {user_redis, [{host, "${REDIS_HOST}"}, {port, ${REDIS_PORT}}, {user, "${REDIS_USER}"}, {password, "${REDIS_PASSWORD}"}]},
   {google_chat_endpoint, "${GOOGLE_CHAT_ENDPOINT}"},
   {duckling_api, "${DUCKLING_API}"},
   {rasa_intent_api, "${RASA_INTENT_API}"}]},

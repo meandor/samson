@@ -17,9 +17,11 @@ start_link() ->
   gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
 init([]) ->
-  {ok, RedisUrl} = application:get_env(samson, redis_url),
-  lager:info("Connecting to: ~p", [RedisUrl]),
-  {ok, _RedisClient} = eredis:start_link(RedisUrl).
+  {ok, RedisConfig} = application:get_env(samson, user_redis),
+  lager:info("Connecting to user redis"),
+  ConnectionStatus = eredis:start_link(RedisConfig),
+  lager:info("Connected to user redis"),
+  ConnectionStatus.
 
 %% @private
 %% @doc Handling call messages
