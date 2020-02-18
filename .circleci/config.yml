@@ -27,7 +27,7 @@ jobs:
           paths:
             - ~/repo/_build
           key: rebar-{{ checksum "rebar.lock" }}
-  deploy_staging:
+  deploy_samson_staging:
     machine: true
     working_directory: ~/repo
     steps:
@@ -52,7 +52,7 @@ jobs:
             cd services/duckling
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-duckling-staging web
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-duckling-staging web
-  deploy_live:
+  deploy_samson_live:
     machine: true
     working_directory: ~/repo
     steps:
@@ -64,6 +64,19 @@ jobs:
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-chatbot-live web
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-chatbot-live web
+  deploy_duckling_live:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Build and push Docker image to Heroku
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+            cd services/duckling
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-duckling-live web
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-duckling-live web
 
 workflows:
   version: 2
@@ -71,7 +84,7 @@ workflows:
     jobs:
       - dialyze
       - test
-      - deploy_staging:
+      - deploy_samson_staging:
           requires:
             - dialyze
             - test
@@ -79,6 +92,11 @@ workflows:
           requires:
             - dialyze
             - test
-      - deploy_live:
+      - deploy_samson_live:
           requires:
-            - deploy_staging
+            - deploy_samson_staging
+            - deploy_duckling_staging
+      - deploy_duckling_live:
+          requires:
+            - deploy_samson_staging
+            - deploy_duckling_staging
