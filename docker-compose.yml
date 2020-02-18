@@ -10,12 +10,12 @@ services:
       - DUCKLING_API=http://duckling:8000/parse
     links:
       - duckling
+      - redis
   duckling:
     image: rasa/duckling
     ports:
       - "8000:8000"
-
-duckling:
+  redis:
     image: redis
     ports:
       - "6379:6379"
