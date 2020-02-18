@@ -8,6 +8,11 @@ services:
       - PORT=8080
       - GOOGLE_CHAT_ENDPOINT=endpoint
       - DUCKLING_API=http://duckling:8000/parse
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_USER=
+      - REDIS_PASSWORD=
+      - RASA_INTENT_API=
     links:
       - duckling
       - redis
