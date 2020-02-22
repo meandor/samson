@@ -38,8 +38,8 @@ jobs:
             sudo curl https://cli-assets.heroku.com/install.sh | sh
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
             cd services/prometheus
-            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-chatbot-staging web
-            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-chatbot-staging web
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-prometheus web
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-prometheus web
   deploy_samson_staging:
     machine: true
     working_directory: ~/repo
