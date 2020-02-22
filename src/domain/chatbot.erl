@@ -6,12 +6,14 @@
 -module(chatbot).
 
 -export([answer/2]).
--export_type([message/0, entities/0, intent/0, userId/0]).
+-export_type([message/0, entities/0, intent/0, userId/0, action/0]).
 
 -type userId() :: string().
 -type message() :: binary().
--type entities() :: list().
+-type entities() :: [entity(), ...].
+-type entity() :: {Name :: atom(), Value :: string()}.
 -type intent() :: {Name :: atom(), Probability :: number()}.
+-type action() :: atom().
 
 -spec answer(UserId :: userId(), Message :: message()) -> message().
 answer(UserId, Message) ->
@@ -22,4 +24,7 @@ answer(UserId, Message) ->
 
   Intent = gen_server:call(intent_classifier, {classifyIntent, UserId, Message}),
   lager:info("Got intent: ~p", [Intent]),
+
+  NextAction = gen_server:call(dialog, {predictNextAction, Intent, Entities}),
+  lager:info("Got next action: ~p", [NextAction]),
   <<"foo">>.

@@ -38,6 +38,13 @@ init([]) ->
       {user_redis, start_link, []},
       shutdown => 3,
       type => worker
+    },
+    #{
+      id => dialog,
+      start =>
+      {dialog, start_link, [fun(X) -> X end]},
+      shutdown => 3,
+      type => worker
     }
   ],
   {ok, {SupFlags, ChildSpecs}}.
