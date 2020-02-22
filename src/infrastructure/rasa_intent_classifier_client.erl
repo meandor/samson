@@ -30,7 +30,7 @@ call_rasa_intents_api(Start, RasaApi, Payload) ->
       []
   end.
 
-classify_intent(Message) ->
+classify_intent_with_rasa(Message) ->
   Start = os:system_time(),
   {ok, RasaIntentAPI} = application:get_env(samson, rasa_intent_api),
 
@@ -45,4 +45,11 @@ classify_intent(Message) ->
         [lager:pr_stacktrace(Stacktrace, {Class, Reason})]
       ),
       []
+  end.
+
+classify_intent(Message) ->
+  case Message of
+    <<"ADDED_TO_SPACE">> -> [{added_to_space, 1.0}];
+    <<"REMOVED_FROM_SPACE">> -> [{removed_from_space, 1.0}];
+    _ -> classify_intent_with_rasa(Message)
   end.
