@@ -25,6 +25,6 @@ answer(UserId, Message) ->
   Intent = gen_server:call(intent_classifier, {classifyIntent, UserId, Message}),
   lager:info("Got intent: ~p", [Intent]),
 
-  NextAction = gen_server:call(dialog, {predictNextAction, Intent, Entities}),
+  NextAction = gen_server:call(dialog, {chooseNextAction, Intent, Entities}),
   lager:info("Got next action: ~p", [NextAction]),
   <<"foo">>.
