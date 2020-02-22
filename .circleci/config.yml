@@ -100,4 +100,3 @@ workflows:
       - deploy_samson_live:
           requires:
             - deploy_samson_staging
-            - deploy_duckling_staging
