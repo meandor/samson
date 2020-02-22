@@ -20,10 +20,10 @@ recognize_entities(Text, NERClient) ->
   lager:info("Extracted entities: ~p", [Entities]),
   Entities.
 
-handle_call({userMessage, _UserId, Message}, _From, [NERClient]) ->
+handle_call({userMessage, UserId, Message}, _From, [NERClient]) ->
   try
     Entities = recognize_entities(Message, NERClient),
-    {reply, Entities, [NERClient]}
+    {reply, [{userId, UserId} | Entities], [NERClient]}
   catch
     Class:Reason:Stacktrace ->
       lager:error("Could not recognize entities"),
@@ -31,7 +31,7 @@ handle_call({userMessage, _UserId, Message}, _From, [NERClient]) ->
         "~nStacktrace:~s",
         [lager:pr_stacktrace(Stacktrace, {Class, Reason})]
       ),
-      {reply, [], [NERClient]}
+      {reply, [{userId, UserId}], [NERClient]}
   end;
 handle_call(terminate, _From, State) ->
   lager:info("Named entity recognition shutdown: Starting"),
