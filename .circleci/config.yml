@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   dialyze:
     docker:
@@ -79,7 +79,16 @@ jobs:
             HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-duckling-live web
 
 workflows:
-  version: 2
+  deploy_services:
+    jobs:
+      - approve_deployment:
+          type: approval
+      - deploy_duckling_staging:
+          requires:
+            - approve_deployment
+      - deploy_duckling_live:
+          requires:
+            - deploy_duckling_staging
   build_test_deploy:
     jobs:
       - dialyze
@@ -88,15 +97,7 @@ workflows:
           requires:
             - dialyze
             - test
-      - deploy_duckling_staging:
-          requires:
-            - dialyze
-            - test
       - deploy_samson_live:
-          requires:
-            - deploy_samson_staging
-            - deploy_duckling_staging
-      - deploy_duckling_live:
           requires:
             - deploy_samson_staging
             - deploy_duckling_staging

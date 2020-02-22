@@ -20,3 +20,4 @@ _build
 *.iml
 rebar3.crashdump
 *~
+config/local.conf
