@@ -4,7 +4,7 @@
 %%% @end
 %%%-------------------------------------------------------------------
 -module(google_chat_handler).
--export([init/2, terminate/3, is_valid_event/1]).
+-export([init/2, terminate/3, is_valid_event/1, extract_message/1]).
 
 is_valid_event(Event) ->
   try
@@ -32,6 +32,16 @@ is_valid_event(Event) ->
       false
   end.
 
+extract_message(Event) ->
+  {ok, EventType} = maps:find(<<"type">>, Event),
+  case EventType of
+    <<"MESSAGE">> ->
+      {ok, Message} = maps:find(<<"message">>, Event),
+      {ok, Text} = maps:find(<<"text">>, Message),
+      Text;
+    _ -> EventType
+  end.
+
 response_for_event(Start, Request, AnswerFn, Event) ->
   IsValidEvent = is_valid_event(Event),
   if
@@ -41,9 +51,8 @@ response_for_event(Start, Request, AnswerFn, Event) ->
       UserEmail = binary_to_list(maps:get(<<"email">>, User)),
       UserState = ["space", UserSpace, "email", UserEmail],
       gen_server:call(user_redis, {updateUser, UserSpace, UserState}),
-      {ok, Message} = maps:find(<<"message">>, Event),
-      {ok, Text} = maps:find(<<"text">>, Message),
-      Answer = AnswerFn(UserSpace, Text),
+      Message = extract_message(Event),
+      Answer = AnswerFn(UserSpace, Message),
       endpoints:response(Start, Request, 200, #{text => Answer});
     true ->
       lager:info("Invalid body given"),
