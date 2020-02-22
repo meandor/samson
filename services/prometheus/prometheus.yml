@@ -1,0 +1,7 @@
+scrape_configs:
+  - job_name: samson-staging
+    static_configs:
+      - targets: ['https://samson-chatbot-staging.herokuapp.com']
+  - job_name: samson-live
+    static_configs:
+      - targets: ['https://samson-chatbot-live.herokuapp.com']

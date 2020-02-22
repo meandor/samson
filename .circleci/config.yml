@@ -27,6 +27,19 @@ jobs:
           paths:
             - ~/repo/_build
           key: rebar-{{ checksum "rebar.lock" }}
+  deploy_prometheus:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Build and push Docker image to Heroku
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:login
+            cd services/prometheus
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:push -a samson-chatbot-staging web
+            HEROKU_API_KEY=${HEROKU_TOKEN} heroku container:release -a samson-chatbot-staging web
   deploy_samson_staging:
     machine: true
     working_directory: ~/repo
@@ -83,6 +96,9 @@ workflows:
     jobs:
       - approve_deployment:
           type: approval
+      - deploy_prometheus:
+          requires:
+            - approve_deployment
       - deploy_duckling_staging:
           requires:
             - approve_deployment
