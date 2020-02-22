@@ -1,7 +1,9 @@
 scrape_configs:
   - job_name: samson-staging
+    scheme: https
     static_configs:
-      - targets: ['https://samson-chatbot-staging.herokuapp.com']
+      - targets: ['samson-chatbot-staging.herokuapp.com']
   - job_name: samson-live
+    scheme: https
     static_configs:
-      - targets: ['https://samson-chatbot-live.herokuapp.com']
+      - targets: ['samson-chatbot-live.herokuapp.com']
