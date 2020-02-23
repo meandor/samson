@@ -1,2 +1,3 @@
 FROM prom/prometheus
-ADD prometheus.yml /etc/prometheus/
+ADD prometheus.yml start.sh /etc/prometheus/
+ENTRYPOINT /etc/prometheus/start.sh
