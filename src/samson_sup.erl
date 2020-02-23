@@ -20,15 +20,17 @@ init([]) ->
   ChildSpecs = [
     #{
       id => ner,
-      start =>
-      {named_entity_recognition, start_link, [fun duckling_client:recognize_entities/1]},
+      start => {
+        named_entity_recognition, start_link, [fun duckling_client:recognize_entities/1]
+      },
       shutdown => 3,
       type => worker
     },
     #{
       id => intent_classifier,
-      start =>
-      {intent_classifier, start_link, [fun rasa_intent_classifier_client:classify_intent/1]},
+      start => {
+        intent_classifier, start_link, [fun rasa_intent_classifier_client:classify_intent/1]
+      },
       shutdown => 3,
       type => worker
     },
@@ -41,8 +43,9 @@ init([]) ->
     },
     #{
       id => dialog,
-      start =>
-      {dialog, start_link, [fun(X) -> X end]},
+      start => {
+        dialog, start_link, [fun(X) -> X end] %TODO: Add a dialog client function here
+      },
       shutdown => 3,
       type => worker
     }

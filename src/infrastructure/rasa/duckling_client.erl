@@ -5,7 +5,7 @@
 %%%-------------------------------------------------------------------
 -module(duckling_client).
 -behaviour(ner_client).
--include("../metrics_registry_h.hrl").
+-include("../../metrics_registry_h.hrl").
 -export([recognize_entities/1, extract_entities/1]).
 
 extract_entity_value(Value) ->
