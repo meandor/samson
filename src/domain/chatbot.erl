@@ -27,4 +27,7 @@ answer(UserId, Message) ->
 
   NextAction = gen_server:call(dialog, {chooseNextAction, UserId, Intent, Entities}),
   lager:info("Got next action: ~p", [NextAction]),
-  <<"foo">>.
+
+  Response = gen_server:call(action_resolver, {resolveAction, UserId, NextAction, Entities}),
+  lager:info("Got response: ~p", [Response]),
+  Response.

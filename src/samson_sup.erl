@@ -44,7 +44,19 @@ init([]) ->
     #{
       id => dialog,
       start => {
-        dialog, start_link, [fun(X) -> X end] %TODO: Add a dialog client function here
+        dialog,
+        start_link,
+        [fun(_UserId, _Intent, _Entities) -> foo_action end] %TODO: Add a dialog client function here
+      },
+      shutdown => 3,
+      type => worker
+    },
+    #{
+      id => action_resolver,
+      start => {
+        action_resolver,
+        start_link,
+        [fun(_UserId, _Action, _Entities) -> <<"Hi">> end] %TODO: Add a action resolver client function here
       },
       shutdown => 3,
       type => worker

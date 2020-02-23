@@ -18,7 +18,7 @@ init(DialogClient) -> {ok, DialogClient}.
 
 -spec choose_next_action(function(), chatbot:userId(), chatbot:intent(), chatbot:entities()) -> chatbot:action().
 choose_next_action(DialogClient, UserId, Intent, Entities) ->
-  apply(DialogClient, [{UserId, Intent, Entities}]).
+  apply(DialogClient, [UserId, Intent, Entities]).
 
 handle_call({chooseNextAction, UserId, Intent, Entities}, _From, [DialogClient]) ->
   lager:info("Starting to choose next action for state: ~p", [{UserId, Intent, Entities}]),

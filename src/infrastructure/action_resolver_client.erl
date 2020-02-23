@@ -3,6 +3,6 @@
 %%%
 %%% @end
 %%%-------------------------------------------------------------------
--module(dialog_client).
--callback choose_next_action(chatbot:userId(), chatbot:intent(), chatbot:entities()) ->
-  NextAction :: chatbot:action().
+-module(action_resolver_client).
+-callback resolve_action(chatbot:userId(), chatbot:action(), chatbot:entities()) ->
+  NextAction :: chatbot:message().
