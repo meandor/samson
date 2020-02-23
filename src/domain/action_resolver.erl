@@ -23,7 +23,7 @@ handle_call({resolveAction, UserId, Action, Entities}, _From, [ActionResolverCli
   lager:info("Starting to resolve action: ~p", [{UserId, Action, Entities}]),
   Response = resolve_action(ActionResolverClient, UserId, Action, Entities),
   lager:info("Resolved action to: ~p", [Response]),
-  {reply, ok, [ActionResolverClient]}.
+  {reply, Response, [ActionResolverClient]}.
 
 handle_cast(_Request, State) -> {noreply, State}.
 
