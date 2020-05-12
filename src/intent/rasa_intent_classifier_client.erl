@@ -5,7 +5,7 @@
 %%%-------------------------------------------------------------------
 -module(rasa_intent_classifier_client).
 -behavior(intent_classifier_client).
--include("../../metrics_registry_h.hrl").
+-include("../metrics_registry_h.hrl").
 -export([classify_intent/1, extract_intents/1]).
 
 extract_intent(IntentMap) ->

@@ -4,7 +4,7 @@
 %%% @end
 %%%-------------------------------------------------------------------
 -module(endpoints).
--include("../../metrics_registry_h.hrl").
+-include("../metrics_registry_h.hrl").
 -export([routes/1, response/4]).
 
 response(Start, Request, StatusCode, ResponseBody) ->
